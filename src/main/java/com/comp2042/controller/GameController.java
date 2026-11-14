@@ -1,5 +1,10 @@
-package com.comp2042;
+package com.comp2042.controller;
 
+import com.comp2042.model.Game;
+import com.comp2042.view.GameView;
+import com.comp2042.model.coins.*;
+import com.comp2042.model.Obstacle;
+import com.comp2042.model.Snake;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -23,8 +28,6 @@ public class GameController {
     private static KeyCode lastKey = KeyCode.LEFT;
     private boolean keyPressed = false;
 
-    private int legacyScoreMultiplier = 2;
-
     public static KeyCode getKey() {
         return key;
     }
@@ -33,10 +36,6 @@ public class GameController {
         return lastKey;
     }
 
-    private void calculateBonusScore() {
-        int bonus = game.getScorePoints() * legacyScoreMultiplier;
-        System.out.println("Bonus score: " + bonus);
-    }
 
     public GameController(Snake snake, Coin coin, Game game, GameView gameView, Obstacle obstacle, Stage stage) {
         this.snake = snake;

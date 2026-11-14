@@ -1,5 +1,12 @@
-package com.comp2042;
+package com.comp2042.controller;
 
+import com.comp2042.model.Game;
+import com.comp2042.view.GameView;
+import com.comp2042.Main;
+import com.comp2042.view.ViewManager;
+import com.comp2042.model.coins.Coin;
+import com.comp2042.model.Obstacle;
+import com.comp2042.model.Snake;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;

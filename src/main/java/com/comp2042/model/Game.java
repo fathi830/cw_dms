@@ -1,8 +1,11 @@
-package com.comp2042;
+package com.comp2042.model;
 
 import javafx.scene.paint.Color;
 
 public class Game {
+    private static final double EASY_SPEED = 8.5;
+    private static final double HARD_SPEED = 13.0;
+
     private Color color = Color.web("feffe4");
     private int width;
     private int height;
@@ -16,20 +19,19 @@ public class Game {
 
     public Game(int x, int y, boolean powerUp, char difficulty) {
         if (difficulty == 'E') {
-            speed = 8.5;
+            speed = EASY_SPEED;
             noBorder = true;
         } else if (difficulty == 'N') {
-            speed = 8.5;
+            speed = EASY_SPEED;
             noBorder = false;
         } else if (difficulty == 'H') {
-            speed = 13;
+            speed = HARD_SPEED;
             noBorder = false;
         }
         this.powerUp = powerUp;
         width = x;
         height = y;
         maxScore = x * y - 2;
-        this.powerUp = powerUp;
         if (height > 50) {
             multiplier = 10;
         } else {

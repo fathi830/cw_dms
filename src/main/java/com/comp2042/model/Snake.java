@@ -1,5 +1,6 @@
-package com.comp2042;
+package com.comp2042.model;
 
+import com.comp2042.model.coins.Coin;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
@@ -43,10 +44,10 @@ public class Snake {
             case 'U':
                 snakeDir = 0;
                 head.translate(0, -1);
-                if (borderControl() && (!ignoreBorders && !noBorder) || obstacle.getObstacles().contains(head)) {
+                if (hasCrashed()) {
                     head.translate(0, 1);
                     dead = true;
-                } else if (borderControl() && (ignoreBorders || noBorder)) {
+                } else if (shouldWrapBorder()) {
                     head.setLocation(head.getX(), gy - 1);
                 }
                 break;
@@ -54,10 +55,10 @@ public class Snake {
             case 'D':
                 snakeDir = 180;
                 head.translate(0, 1);
-                if (borderControl() && (!ignoreBorders && !noBorder) || obstacle.getObstacles().contains(head)) {
+                if (hasCrashed()) {
                     head.translate(0, -1);
                     dead = true;
-                } else if (borderControl() && (ignoreBorders || noBorder)) {
+                } else if (shouldWrapBorder()) {
                     head.setLocation(head.getX(), 0);
                 }
                 break;
@@ -65,10 +66,10 @@ public class Snake {
             case 'L':
                 snakeDir = 270;
                 head.translate(-1, 0);
-                if (borderControl() && (!ignoreBorders && !noBorder) || obstacle.getObstacles().contains(head)) {
+                if (hasCrashed()) {
                     head.translate(1, 0);
                     dead = true;
-                } else if (borderControl() && (ignoreBorders || noBorder)) {
+                } else if (shouldWrapBorder()) {
                     head.setLocation(gx - 1, head.getY());
                 }
                 break;
@@ -76,10 +77,10 @@ public class Snake {
             case 'R':
                 snakeDir = 90;
                 head.translate(1, 0);
-                if (borderControl() && (!ignoreBorders && !noBorder) || obstacle.getObstacles().contains(head)) {
+                if (hasCrashed()) {
                     head.translate(-1, 0);
                     dead = true;
-                } else if (borderControl() && (ignoreBorders || noBorder)) {
+                } else if (shouldWrapBorder()) {
                     head.setLocation(0, head.getY());
                 }
                 break;
@@ -110,6 +111,15 @@ public class Snake {
     private boolean borderControl() {
         return head.getX() < 0 || head.getY() < 0 || head.getX() >= gx || head.getY() >= gy;
     }
+
+    private boolean hasCrashed() {
+        return (borderControl() && (!ignoreBorders && !noBorder)) || obstacle.getObstacles().contains(head);
+    }
+
+    private boolean shouldWrapBorder() {
+        return borderControl() && (ignoreBorders || noBorder);
+    }
+
 
     public boolean hitSelf() {
         return body.contains(head);
