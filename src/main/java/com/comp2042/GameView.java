@@ -16,12 +16,12 @@ import java.awt.*;
 
 public class GameView {
 
-    public Canvas gridCanvas;
-    public GraphicsContext gc;
+    private Canvas gridCanvas;
+    private GraphicsContext gc;
 
-    public Label gameOverLabel;
-    public Label gameWonLabel;
-    public Label scoreLabel;
+    private Label gameOverLabel;
+    private Label gameWonLabel;
+    private Label scoreLabel;
     private boolean gameOverVis = false;
     private boolean gameWonVis = false;
 
@@ -34,6 +34,26 @@ public class GameView {
 
     public GameView(Game game) {
         this.game = game;
+    }
+
+    public Canvas getGridCanvas() {
+        return gridCanvas;
+    }
+
+    public GraphicsContext getGc() {
+        return gc;
+    }
+
+    public Label getGameOverLabel() {
+        return gameOverLabel;
+    }
+
+    public Label getGameWonLabel() {
+        return gameWonLabel;
+    }
+
+    public Label getScoreLabel() {
+        return scoreLabel;
     }
 
     public void makeScene(Scene scene, Snake snake, Coin coin) {
@@ -174,13 +194,13 @@ public class GameView {
     }
 
     public void turnDir(Snake snake) {
-        if ((GameController.lastKey == KeyCode.LEFT && GameController.key == KeyCode.UP) || (GameController.lastKey == KeyCode.DOWN && GameController.key == KeyCode.RIGHT)) {
+        if ((GameController.getLastKey() == KeyCode.LEFT && GameController.getKey() == KeyCode.UP) || (GameController.getLastKey() == KeyCode.DOWN && GameController.getKey() == KeyCode.RIGHT)) {
             turnArray[(int) snake.getHead().getX()][(int) snake.getHead().getY()] = 2;
-        } else if ((GameController.lastKey == KeyCode.LEFT && GameController.key == KeyCode.DOWN) || (GameController.lastKey == KeyCode.UP && GameController.key == KeyCode.RIGHT)) {
+        } else if ((GameController.getLastKey() == KeyCode.LEFT && GameController.getKey() == KeyCode.DOWN) || (GameController.getLastKey() == KeyCode.UP && GameController.getKey() == KeyCode.RIGHT)) {
             turnArray[(int) snake.getHead().getX()][(int) snake.getHead().getY()] = 3;
-        } else if ((GameController.lastKey == KeyCode.RIGHT && GameController.key == KeyCode.UP) || (GameController.lastKey == KeyCode.DOWN && GameController.key == KeyCode.LEFT)) {
+        } else if ((GameController.getLastKey() == KeyCode.RIGHT && GameController.getKey() == KeyCode.UP) || (GameController.getLastKey() == KeyCode.DOWN && GameController.getKey() == KeyCode.LEFT)) {
             turnArray[(int) snake.getHead().getX()][(int) snake.getHead().getY()] = 1;
-        } else if ((GameController.lastKey == KeyCode.UP && GameController.key == KeyCode.LEFT) || (GameController.lastKey == KeyCode.RIGHT && GameController.key == KeyCode.DOWN)) {
+        } else if ((GameController.getLastKey() == KeyCode.UP && GameController.getKey() == KeyCode.LEFT) || (GameController.getLastKey() == KeyCode.RIGHT && GameController.getKey() == KeyCode.DOWN)) {
             turnArray[(int) snake.getHead().getX()][(int) snake.getHead().getY()] = 4;
         } else turnArray[(int) snake.getHead().getX()][(int) snake.getHead().getY()] = 0;
     }

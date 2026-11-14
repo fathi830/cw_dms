@@ -19,11 +19,19 @@ public class GameController {
     private String coinSoundPath = "resources/views/res/coinSound.wav";
     private Obstacle obstacle;
 
-    public static KeyCode key = KeyCode.LEFT;
-    public static KeyCode lastKey = KeyCode.LEFT;
+    private static KeyCode key = KeyCode.LEFT;
+    private static KeyCode lastKey = KeyCode.LEFT;
     private boolean keyPressed = false;
 
     private int legacyScoreMultiplier = 2;
+
+    public static KeyCode getKey() {
+        return key;
+    }
+
+    public static KeyCode getLastKey() {
+        return lastKey;
+    }
 
     private void calculateBonusScore() {
         int bonus = game.getScorePoints() * legacyScoreMultiplier;
@@ -61,7 +69,7 @@ public class GameController {
                 powerCoin();
                 game.incScore();
                 if (game.gameWon()) {
-                    gameView.drawGrid(coin, snake, obstacle, gameView.gc, false, 0);
+                    gameView.drawGrid(coin, snake, obstacle, gameView.getGc(), false, 0);
                     return;
                 }
                 newCoin();
@@ -70,7 +78,7 @@ public class GameController {
             keyPressed = false;
 
             if (!snake.getDead() || snake.hitSelf()) {
-                gameView.drawGrid(coin, snake, obstacle, gameView.gc, false, 0);
+                gameView.drawGrid(coin, snake, obstacle, gameView.getGc(), false, 0);
             }
 
             gameView.gameWon();
@@ -95,21 +103,21 @@ public class GameController {
 
         if (event.getCode().equals(KeyCode.TAB)) {
             reset();
-            gameView.scoreLabel.setText("Score: " + game.getScorePoints());
+            gameView.getScoreLabel().setText("Score: " + game.getScorePoints());
         }
 
         if (event.getCode().equals(KeyCode.PLUS)) {
             gameView.scaleToFullscreen(true, stage, obstacle, snake, coin);
-            gameView.gameOverLabel.setStyle("-fx-font-size: 50;");
-            gameView.gameWonLabel.setStyle("-fx-font-size: 50;");
-            gameView.scoreLabel.setStyle("-fx-font-size: 35;");
+            gameView.getGameOverLabel().setStyle("-fx-font-size: 50;");
+            gameView.getGameWonLabel().setStyle("-fx-font-size: 50;");
+            gameView.getScoreLabel().setStyle("-fx-font-size: 35;");
         }
 
         if (event.getCode().equals(KeyCode.MINUS)) {
             gameView.scaleToFullscreen(false, stage, obstacle, snake, coin);
-            gameView.gameOverLabel.setStyle("-fx-font-size: 15;");
-            gameView.gameWonLabel.setStyle("-fx-font-size: 15;");
-            gameView.scoreLabel.setStyle("-fx-font-size: 15;");
+            gameView.getGameOverLabel().setStyle("-fx-font-size: 15;");
+            gameView.getGameWonLabel().setStyle("-fx-font-size: 15;");
+            gameView.getScoreLabel().setStyle("-fx-font-size: 15;");
         }
 
         if (event.getCode().equals(KeyCode.ESCAPE)) {
@@ -150,7 +158,7 @@ public class GameController {
         gameView.gameOver(snake);
         gameView.updateScoreLabel();
 
-        gameView.drawGrid(coin, snake, obstacle, gameView.gc, false, 0);
+        gameView.drawGrid(coin, snake, obstacle, gameView.getGc(), false, 0);
     }
 
     private void powerCoin() {
