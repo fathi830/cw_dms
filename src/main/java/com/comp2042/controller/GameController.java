@@ -43,7 +43,6 @@ public class GameController {
         this.gameView = gameView;
         this.game = game;
         this.stage = stage;
-
         this.obstacle = obstacle;
         animation.setCycleCount(Animation.INDEFINITE);
         animation.setRate(game.getSpeed());
@@ -131,7 +130,7 @@ public class GameController {
         else {
             if (key.equals(KeyCode.LEFT)) if (!this.key.equals(KeyCode.RIGHT)) return true;
             if (key.equals(KeyCode.RIGHT)) if (!this.key.equals(KeyCode.LEFT)) return true;
-            if (key.equals(KeyCode.DOWN)) if (!this.key.equals(KeyCode.DOWN)) return true;
+            if (key.equals(KeyCode.DOWN)) if (!this.key.equals(KeyCode.UP)) return true;
             if (key.equals(KeyCode.UP)) return !this.key.equals(KeyCode.DOWN);
             return false;
         }
@@ -182,7 +181,7 @@ public class GameController {
             int ran = rnd.nextInt(12);
             if (ran == 1) {
                 coin = new GoldCoin(game.getWidth(), game.getHeight(), snake, obstacle);
-            } else if (ran == 1) {
+            } else if (ran == 2) {
                 coin = new RainbowCoin(game.getWidth(), game.getHeight(), snake, obstacle);
             } else if (ran == 3) {
                 coin = new BlueCoin(game.getWidth(), game.getHeight(), snake, obstacle);
