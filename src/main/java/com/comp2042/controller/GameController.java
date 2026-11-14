@@ -28,8 +28,6 @@ public class GameController {
     private static KeyCode lastKey = KeyCode.LEFT;
     private boolean keyPressed = false;
 
-    private int legacyScoreMultiplier = 2;
-
     public static KeyCode getKey() {
         return key;
     }
@@ -38,10 +36,6 @@ public class GameController {
         return lastKey;
     }
 
-    private void calculateBonusScore() {
-        int bonus = game.getScorePoints() * legacyScoreMultiplier;
-        System.out.println("Bonus score: " + bonus);
-    }
 
     public GameController(Snake snake, Coin coin, Game game, GameView gameView, Obstacle obstacle, Stage stage) {
         this.snake = snake;
