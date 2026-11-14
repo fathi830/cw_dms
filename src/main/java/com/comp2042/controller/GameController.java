@@ -1,5 +1,10 @@
-package com.comp2042;
+package com.comp2042.controller;
 
+import com.comp2042.model.Game;
+import com.comp2042.view.GameView;
+import com.comp2042.model.coins.*;
+import com.comp2042.model.Obstacle;
+import com.comp2042.model.Snake;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;

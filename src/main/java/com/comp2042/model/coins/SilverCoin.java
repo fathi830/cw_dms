@@ -1,4 +1,7 @@
-package com.comp2042;
+package com.comp2042.model.coins;
+
+import com.comp2042.model.Obstacle;
+import com.comp2042.model.Snake;
 
 public class SilverCoin extends Coin {
     public SilverCoin(int x, int y, Snake snake, Obstacle obstacle) {
