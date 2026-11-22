@@ -12,6 +12,8 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import javafx.scene.media.AudioClip;
+import java.io.File;
 
 import java.util.Random;
 
@@ -22,6 +24,7 @@ public class GameController {
     private Game game;
     private Stage stage;
     private String coinSoundPath = "resources/views/res/coinSound.wav";
+    private AudioClip coinSound;
     private Obstacle obstacle;
 
     private static KeyCode key = KeyCode.LEFT;
@@ -44,6 +47,13 @@ public class GameController {
         this.game = game;
         this.stage = stage;
         this.obstacle = obstacle;
+
+        try {
+            String soundUrl = getClass().getResource("/" + coinSoundPath).toExternalForm();
+            coinSound = new AudioClip(soundUrl);
+        } catch (Exception e) {
+            System.out.println("Error loading sound: " + e.getMessage());
+        }
         animation.setCycleCount(Animation.INDEFINITE);
         animation.setRate(game.getSpeed());
     }
@@ -64,6 +74,10 @@ public class GameController {
             }
 
             if (!snake.getDead() && snake.ateCoin(coin)) {
+                if (coinSound != null) {
+                    coinSound.play();
+                }
+
                 powerCoin();
                 game.incScore();
                 if (game.gameWon()) {
