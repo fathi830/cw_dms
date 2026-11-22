@@ -1,10 +1,12 @@
 package com.comp2042.controller;
 
 import com.comp2042.model.Game;
+import com.comp2042.utill.SoundManager;
 import com.comp2042.view.GameView;
 import com.comp2042.model.coins.*;
 import com.comp2042.model.Obstacle;
 import com.comp2042.model.Snake;
+import com.comp2042.view.SnakeRenderer;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -12,7 +14,6 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import javafx.scene.media.AudioClip;
 import java.io.File;
 
 import java.util.Random;
@@ -23,9 +24,8 @@ public class GameController {
     private GameView gameView;
     private Game game;
     private Stage stage;
-    private String coinSoundPath = "resources/views/res/coinSound.wav";
-    private AudioClip coinSound;
     private Obstacle obstacle;
+    private SoundManager soundManager;
 
     private static KeyCode key = KeyCode.LEFT;
     private static KeyCode lastKey = KeyCode.LEFT;
@@ -47,13 +47,8 @@ public class GameController {
         this.game = game;
         this.stage = stage;
         this.obstacle = obstacle;
+        this.soundManager = new SoundManager();
 
-        try {
-            String soundUrl = getClass().getResource("/" + coinSoundPath).toExternalForm();
-            coinSound = new AudioClip(soundUrl);
-        } catch (Exception e) {
-            System.out.println("Error loading sound: " + e.getMessage());
-        }
         animation.setCycleCount(Animation.INDEFINITE);
         animation.setRate(game.getSpeed());
     }
@@ -74,9 +69,7 @@ public class GameController {
             }
 
             if (!snake.getDead() && snake.ateCoin(coin)) {
-                if (coinSound != null) {
-                    coinSound.play();
-                }
+                soundManager.playCoinEatenSound();
 
                 powerCoin();
                 game.incScore();
