@@ -26,8 +26,8 @@ public class Obstacle {
         Point p;
         for (int i=0; i<amount; i++) {
             do {
-                p = new Point(rnd.nextInt(x) + 1, rnd.nextInt(y));
-            } while (coin.getPos().equals(p) || snake.getBody().contains(p) || snake.getHead().equals(p));
+                p = new Point(rnd.nextInt(x), rnd.nextInt(y));
+            } while (coin.getPos().equals(p) || snake.getBody().contains(p) || snake.getHead().equals(p) || obstacles.contains(p));
             obstacles.add(p);
         }
     }

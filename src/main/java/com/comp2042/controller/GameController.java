@@ -118,7 +118,7 @@ public class GameController {
             gameView.getScoreLabel().setText("Score: " + game.getScorePoints());
         }
 
-        if (event.getCode().equals(KeyCode.PLUS)) {
+        if (event.getCode().equals(KeyCode.PLUS) || event.getCode().equals(KeyCode.EQUALS)) {
             gameView.scaleToFullscreen(true, stage, obstacle, snake, coin);
             gameView.getGameOverLabel().setStyle("-fx-font-size: 50;");
             gameView.getGameWonLabel().setStyle("-fx-font-size: 50;");
@@ -136,6 +136,7 @@ public class GameController {
             MainMenuController mainMenuController = new MainMenuController();
             mainMenuController.getViewManager().getPrimaryStage().show();
             mainMenuController.getViewManager().getGameStage().close();
+            animation.stop();
         }
     }
 
@@ -171,6 +172,7 @@ public class GameController {
         gameView.updateScoreLabel();
 
         gameView.drawGrid(coin, snake, obstacle, gameView.getGc(), false, 0);
+        gameView.resetTurns();
     }
 
     private void powerCoin() {
