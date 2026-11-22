@@ -12,6 +12,8 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import javafx.scene.media.AudioClip;
+import java.io.File;
 
 import java.util.Random;
 
@@ -22,6 +24,7 @@ public class GameController {
     private Game game;
     private Stage stage;
     private String coinSoundPath = "resources/views/res/coinSound.wav";
+    private AudioClip coinSound;
     private Obstacle obstacle;
 
     private static KeyCode key = KeyCode.LEFT;
@@ -43,8 +46,14 @@ public class GameController {
         this.gameView = gameView;
         this.game = game;
         this.stage = stage;
-
         this.obstacle = obstacle;
+
+        try {
+            String soundUrl = getClass().getResource("/" + coinSoundPath).toExternalForm();
+            coinSound = new AudioClip(soundUrl);
+        } catch (Exception e) {
+            System.out.println("Error loading sound: " + e.getMessage());
+        }
         animation.setCycleCount(Animation.INDEFINITE);
         animation.setRate(game.getSpeed());
     }
@@ -65,6 +74,10 @@ public class GameController {
             }
 
             if (!snake.getDead() && snake.ateCoin(coin)) {
+                if (coinSound != null) {
+                    coinSound.play();
+                }
+
                 powerCoin();
                 game.incScore();
                 if (game.gameWon()) {
@@ -105,7 +118,7 @@ public class GameController {
             gameView.getScoreLabel().setText("Score: " + game.getScorePoints());
         }
 
-        if (event.getCode().equals(KeyCode.PLUS)) {
+        if (event.getCode().equals(KeyCode.PLUS) || event.getCode().equals(KeyCode.EQUALS)) {
             gameView.scaleToFullscreen(true, stage, obstacle, snake, coin);
             gameView.getGameOverLabel().setStyle("-fx-font-size: 50;");
             gameView.getGameWonLabel().setStyle("-fx-font-size: 50;");
@@ -123,6 +136,7 @@ public class GameController {
             MainMenuController mainMenuController = new MainMenuController();
             mainMenuController.getViewManager().getPrimaryStage().show();
             mainMenuController.getViewManager().getGameStage().close();
+            animation.stop();
         }
     }
 
@@ -131,7 +145,7 @@ public class GameController {
         else {
             if (key.equals(KeyCode.LEFT)) if (!this.key.equals(KeyCode.RIGHT)) return true;
             if (key.equals(KeyCode.RIGHT)) if (!this.key.equals(KeyCode.LEFT)) return true;
-            if (key.equals(KeyCode.DOWN)) if (!this.key.equals(KeyCode.DOWN)) return true;
+            if (key.equals(KeyCode.DOWN)) if (!this.key.equals(KeyCode.UP)) return true;
             if (key.equals(KeyCode.UP)) return !this.key.equals(KeyCode.DOWN);
             return false;
         }
@@ -158,6 +172,7 @@ public class GameController {
         gameView.updateScoreLabel();
 
         gameView.drawGrid(coin, snake, obstacle, gameView.getGc(), false, 0);
+        gameView.resetTurns();
     }
 
     private void powerCoin() {
@@ -182,7 +197,7 @@ public class GameController {
             int ran = rnd.nextInt(12);
             if (ran == 1) {
                 coin = new GoldCoin(game.getWidth(), game.getHeight(), snake, obstacle);
-            } else if (ran == 1) {
+            } else if (ran == 2) {
                 coin = new RainbowCoin(game.getWidth(), game.getHeight(), snake, obstacle);
             } else if (ran == 3) {
                 coin = new BlueCoin(game.getWidth(), game.getHeight(), snake, obstacle);

@@ -155,7 +155,7 @@ public class GameView {
         SnapshotParameters params = new SnapshotParameters();
         params.setFill(Color.TRANSPARENT);
         Image rotatedImage = snake.getImageViewHead().snapshot(params, null);
-        gc.drawImage(rotatedImage, (snake.getHead().x * game.getMultiplier()) * fullScale, (snake.getHead().y * game.getMultiplier()) * fullScale, game.getMultiplier() * fullScale * fullScale, game.getMultiplier() * fullScale * fullScale);
+        gc.drawImage(rotatedImage, (snake.getHead().x * game.getMultiplier()) * fullScale, (snake.getHead().y * game.getMultiplier()) * fullScale, game.getMultiplier() * fullScale, game.getMultiplier() * fullScale);
     }
 
     private void drawBody(Snake snake, Point point, int index) {
@@ -196,7 +196,7 @@ public class GameView {
             turnArray[(int) snake.getBody().get(0).getX()][(int) snake.getBody().get(0).getY()] = 0;
         }
 
-        gc.drawImage(rotatedImage, (point.x * game.getMultiplier()) * fullScale, (point.y * game.getMultiplier()) * fullScale, game.getMultiplier() * fullScale * fullScale, game.getMultiplier() * fullScale * fullScale);
+        gc.drawImage(rotatedImage, (point.x * game.getMultiplier()) * fullScale, (point.y * game.getMultiplier()) * fullScale, game.getMultiplier() * fullScale, game.getMultiplier() * fullScale);
     }
 
     public void turnDir(Snake snake) {
@@ -233,6 +233,10 @@ public class GameView {
 
     public void updateScoreLabel() {
         scoreLabel.setText("Score: " + game.getScorePoints());
+    }
+
+    public void resetTurns(){
+        turnArray = new int[game.getWidth()][game.getHeight()];
     }
 
 }

@@ -47,7 +47,7 @@ public class ViewManager {
         gameStage = new Stage();
         gameStage.setTitle("Snake Game");
         gameStage.getIcons().add(snakeLogo);
-        gameStage.setResizable(false);
+        gameStage.setResizable(true);
     }
 
     public Stage getGameStage() {
