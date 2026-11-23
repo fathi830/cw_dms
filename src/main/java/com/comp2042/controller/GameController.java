@@ -73,9 +73,7 @@ public class GameController {
                 gameView.drawGrid(coin, snake, obstacle, gameView.getGc(), false, 0);
             }
 
-            gameView.gameWon();
-            gameView.gameOver(snake);
-            gameView.updateScoreLabel();
+            game.notifyGameOver(snake.getDead());
         }
     }));
 
@@ -93,10 +91,6 @@ public class GameController {
         inputHandler.resetInput();
         game.resetScore();
         obstacle.reset();
-
-        gameView.gameWon();
-        gameView.gameOver(snake);
-        gameView.updateScoreLabel();
 
         gameView.drawGrid(coin, snake, obstacle, gameView.getGc(), false, 0);
         gameView.resetTurns();

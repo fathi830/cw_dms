@@ -1,6 +1,7 @@
 package com.comp2042.view;
 
 import com.comp2042.model.Game;
+import com.comp2042.model.GameObserver;
 import com.comp2042.model.coins.Coin;
 import com.comp2042.model.Obstacle;
 import com.comp2042.model.Snake;
@@ -17,17 +18,15 @@ import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 
-public class GameView {
+public class GameView implements GameObserver {
 
     private Canvas gridCanvas;
     private GraphicsContext gc;
-
     private Label gameOverLabel;
     private Label gameWonLabel;
     private Label scoreLabel;
     private boolean gameOverVis = false;
     private boolean gameWonVis = false;
-
     private Game game;
     private double initX;
     private double initY;
@@ -38,31 +37,8 @@ public class GameView {
 
     public GameView(Game game) {
         this.game = game;
+        this.game.addObserver(this);
         this.snakeRenderer = new SnakeRenderer(game.getWidth(), game.getHeight());
-    }
-
-    public Canvas getGridCanvas() {
-        return gridCanvas;
-    }
-
-    public GraphicsContext getGc() {
-        return gc;
-    }
-
-    public Label getGameOverLabel() {
-        return gameOverLabel;
-    }
-
-    public Label getGameWonLabel() {
-        return gameWonLabel;
-    }
-
-    public Label getScoreLabel() {
-        return scoreLabel;
-    }
-
-    private javafx.scene.image.Image getCoinImage(Coin coin) {
-        return coinImageCache.computeIfAbsent(coin.getImagePath(), Image::new);
     }
 
     public void makeScene(Scene scene, Snake snake, Coin coin) {
@@ -147,6 +123,26 @@ public class GameView {
         snakeRenderer.draw(gc, snake, game.getMultiplier(), fullScale);
     }
 
+    public void onScoreChanged(int newScore){
+        if (scoreLabel != null){
+            scoreLabel.setText("Score: " + newScore);
+        }
+    }
+
+    public void onGameWon(boolean won){
+        if (gameWonLabel != null){
+            gameWonVis = won;
+            gameWonLabel.setVisible(won);
+        }
+    }
+
+    public void onGameOver(boolean isOver){
+        if  (gameOverLabel != null){
+            gameOverVis = isOver;
+            gameOverLabel.setVisible(isOver);
+        }
+    }
+
     public void turnDir(Snake snake) {
         snakeRenderer.turnDir(snake);
     }
@@ -155,29 +151,28 @@ public class GameView {
         snakeRenderer.resetTurns();
     }
 
-    public void gameOver(Snake snake) {
-        if (snake.getDead() && !gameOverVis) {
-            gameOverVis = true;
-            gameOverLabel.setVisible(true);
-        } else if (!snake.getDead() && gameOverVis) {
-            gameOverLabel.setVisible(false);
-            gameOverVis = false;
-        }
+    public Canvas getGridCanvas() {
+        return gridCanvas;
     }
 
-    public void gameWon() {
-        if (game.gameWon() && !gameWonVis) {
-            gameWonVis = true;
-            gameWonLabel.setVisible(true);
-        } else if (!game.gameWon() && gameWonVis) {
-            gameWonVis = false;
-            gameWonLabel.setVisible(false);
-        }
+    public GraphicsContext getGc() {
+        return gc;
     }
 
-    public void updateScoreLabel() {
-        scoreLabel.setText("Score: " + game.getScorePoints());
+    public Label getGameOverLabel() {
+        return gameOverLabel;
     }
 
+    public Label getGameWonLabel() {
+        return gameWonLabel;
+    }
+
+    public Label getScoreLabel() {
+        return scoreLabel;
+    }
+
+    private javafx.scene.image.Image getCoinImage(Coin coin) {
+        return coinImageCache.computeIfAbsent(coin.getImagePath(), Image::new);
+    }
 
 }
