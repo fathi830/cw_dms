@@ -1,6 +1,6 @@
 package com.comp2042.view;
 
-import com.comp2042.controller.GameController;
+import com.comp2042.controller.InputHandler;
 import com.comp2042.model.Snake;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.GraphicsContext;
@@ -32,13 +32,13 @@ public class SnakeRenderer {
     }
 
     public void turnDir(Snake snake) {
-        if ((GameController.getLastKey() == KeyCode.LEFT && GameController.getKey() == KeyCode.UP) || (GameController.getLastKey() == KeyCode.DOWN && GameController.getKey() == KeyCode.RIGHT)) {
+        if ((InputHandler.getLastKey() == KeyCode.LEFT && InputHandler.getKey() == KeyCode.UP) || (InputHandler.getLastKey() == KeyCode.DOWN && InputHandler.getKey() == KeyCode.RIGHT)) {
             turnArray[(int) snake.getHead().getX()][(int) snake.getHead().getY()] = 2;
-        } else if ((GameController.getLastKey() == KeyCode.LEFT && GameController.getKey() == KeyCode.DOWN) || (GameController.getLastKey() == KeyCode.UP && GameController.getKey() == KeyCode.RIGHT)) {
+        } else if ((InputHandler.getLastKey() == KeyCode.LEFT && InputHandler.getKey() == KeyCode.DOWN) || (InputHandler.getLastKey() == KeyCode.UP && InputHandler.getKey() == KeyCode.RIGHT)) {
             turnArray[(int) snake.getHead().getX()][(int) snake.getHead().getY()] = 3;
-        } else if ((GameController.getLastKey() == KeyCode.RIGHT && GameController.getKey() == KeyCode.UP) || (GameController.getLastKey() == KeyCode.DOWN && GameController.getKey() == KeyCode.LEFT)) {
+        } else if ((InputHandler.getLastKey() == KeyCode.RIGHT && InputHandler.getKey() == KeyCode.UP) || (InputHandler.getLastKey() == KeyCode.DOWN && InputHandler.getKey() == KeyCode.LEFT)) {
             turnArray[(int) snake.getHead().getX()][(int) snake.getHead().getY()] = 1;
-        } else if ((GameController.getLastKey() == KeyCode.UP && GameController.getKey() == KeyCode.LEFT) || (GameController.getLastKey() == KeyCode.RIGHT && GameController.getKey() == KeyCode.DOWN)) {
+        } else if ((InputHandler.getLastKey() == KeyCode.UP && InputHandler.getKey() == KeyCode.LEFT) || (InputHandler.getLastKey() == KeyCode.RIGHT && InputHandler.getKey() == KeyCode.DOWN)) {
             turnArray[(int) snake.getHead().getX()][(int) snake.getHead().getY()] = 4;
         } else turnArray[(int) snake.getHead().getX()][(int) snake.getHead().getY()] = 0;
     }

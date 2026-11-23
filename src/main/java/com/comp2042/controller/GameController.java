@@ -6,15 +6,12 @@ import com.comp2042.view.GameView;
 import com.comp2042.model.coins.*;
 import com.comp2042.model.Obstacle;
 import com.comp2042.model.Snake;
-import com.comp2042.view.SnakeRenderer;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import java.io.File;
 
 import java.util.Random;
 
@@ -26,18 +23,7 @@ public class GameController {
     private Stage stage;
     private Obstacle obstacle;
     private SoundManager soundManager;
-
-    private static KeyCode key = KeyCode.LEFT;
-    private static KeyCode lastKey = KeyCode.LEFT;
-    private boolean keyPressed = false;
-
-    public static KeyCode getKey() {
-        return key;
-    }
-
-    public static KeyCode getLastKey() {
-        return lastKey;
-    }
+    private InputHandler inputHandler;
 
 
     public GameController(Snake snake, Coin coin, Game game, GameView gameView, Obstacle obstacle, Stage stage) {
@@ -48,6 +34,7 @@ public class GameController {
         this.stage = stage;
         this.obstacle = obstacle;
         this.soundManager = new SoundManager();
+        this.inputHandler = new InputHandler(this);
 
         animation.setCycleCount(Animation.INDEFINITE);
         animation.setRate(game.getSpeed());
@@ -58,13 +45,13 @@ public class GameController {
             return;
         } else {
 
-            if (key.equals(KeyCode.LEFT)) {
+            if (InputHandler.getKey().equals(KeyCode.LEFT)) {
                 snake.move('L');
-            } else if (key.equals(KeyCode.RIGHT)) {
+            } else if (InputHandler.getKey().equals(KeyCode.RIGHT)) {
                 snake.move('R');
-            } else if (key.equals(KeyCode.UP)) {
+            } else if (InputHandler.getKey().equals(KeyCode.UP)) {
                 snake.move('U');
-            } else if (key.equals(KeyCode.DOWN)) {
+            } else if (InputHandler.getKey().equals(KeyCode.DOWN)) {
                 snake.move('D');
             }
 
@@ -80,7 +67,7 @@ public class GameController {
                 newCoin();
             }
 
-            keyPressed = false;
+            inputHandler.unlockInput();
 
             if (!snake.getDead() || snake.hitSelf()) {
                 gameView.drawGrid(coin, snake, obstacle, gameView.getGc(), false, 0);
@@ -92,59 +79,7 @@ public class GameController {
         }
     }));
 
-    public void handle(KeyEvent event) {
-        if (event.getCode().isArrowKey()) animation.play();
-
-        if (valKey(event.getCode()) && !keyPressed) {
-            lastKey = key;
-            key = event.getCode();
-            keyPressed = true;
-            gameView.turnDir(snake);
-        }
-
-        if (event.getCode().equals(KeyCode.P)) {
-            animation.stop();
-        }
-
-        if (event.getCode().equals(KeyCode.TAB)) {
-            reset();
-            gameView.getScoreLabel().setText("Score: " + game.getScorePoints());
-        }
-
-        if (event.getCode().equals(KeyCode.PLUS) || event.getCode().equals(KeyCode.EQUALS)) {
-            gameView.scaleToFullscreen(true, stage, obstacle, snake, coin);
-            gameView.getGameOverLabel().setStyle("-fx-font-size: 50;");
-            gameView.getGameWonLabel().setStyle("-fx-font-size: 50;");
-            gameView.getScoreLabel().setStyle("-fx-font-size: 35;");
-        }
-
-        if (event.getCode().equals(KeyCode.MINUS)) {
-            gameView.scaleToFullscreen(false, stage, obstacle, snake, coin);
-            gameView.getGameOverLabel().setStyle("-fx-font-size: 15;");
-            gameView.getGameWonLabel().setStyle("-fx-font-size: 15;");
-            gameView.getScoreLabel().setStyle("-fx-font-size: 15;");
-        }
-
-        if (event.getCode().equals(KeyCode.ESCAPE)) {
-            MainMenuController mainMenuController = new MainMenuController();
-            mainMenuController.getViewManager().getPrimaryStage().show();
-            mainMenuController.getViewManager().getGameStage().close();
-            animation.stop();
-        }
-    }
-
-    private boolean valKey(KeyCode key) {
-        if (!key.isArrowKey()) return false;
-        else {
-            if (key.equals(KeyCode.LEFT)) if (!this.key.equals(KeyCode.RIGHT)) return true;
-            if (key.equals(KeyCode.RIGHT)) if (!this.key.equals(KeyCode.LEFT)) return true;
-            if (key.equals(KeyCode.DOWN)) if (!this.key.equals(KeyCode.UP)) return true;
-            if (key.equals(KeyCode.UP)) return !this.key.equals(KeyCode.DOWN);
-            return false;
-        }
-    }
-
-    private void reset() {
+    public void reset() {
 
         animation.jumpTo(Duration.ZERO);
         animation.stop();
@@ -155,8 +90,7 @@ public class GameController {
         int unusedObstacleCount = new Random().nextInt(game.getWidth() * game.getHeight() / 20) + 3;
 
         animation.setRate(game.getSpeed());
-        key = KeyCode.LEFT;
-        keyPressed = false;
+        inputHandler.resetInput();
         game.resetScore();
         obstacle.reset();
 
@@ -203,4 +137,32 @@ public class GameController {
             coin = new Coin(game.getWidth(), game.getHeight(), snake, obstacle);
         }
     }
+
+    public void startGame() {
+        animation.play();
+    }
+
+    public void pauseGame() {
+        animation.stop();
+    }
+
+    public void onDirectionChanged(){
+        gameView.turnDir(snake);
+    }
+
+    public void setFullscreen(boolean full){
+        gameView.scaleToFullscreen(full, stage, obstacle, snake, coin);
+    }
+
+    public void exitToMenu(){
+        MainMenuController mainMenuController = new MainMenuController();
+        mainMenuController.getViewManager().getPrimaryStage().show();
+        mainMenuController.getViewManager().getGameStage().close();
+        animation.stop();
+    }
+
+    public InputHandler getInputHandler() {
+        return inputHandler;
+    }
+
 }

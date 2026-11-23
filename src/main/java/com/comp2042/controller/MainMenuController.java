@@ -46,7 +46,7 @@ public class MainMenuController {
         StackPane gamePane = new StackPane();
         gameScene = new Scene(gamePane, game.getWidth() * game.getMultiplier(), game.getHeight() * game.getMultiplier());
 
-        gameScene.setOnKeyPressed(controller::handle);
+        gameScene.setOnKeyPressed(controller.getInputHandler()::handle);
 
         gameView.makeScene(gameScene, snake, coin);
         gamePane.getChildren().addAll(gameView.getGridCanvas(), gameView.getGameOverLabel(), gameView.getGameWonLabel(), gameView.getScoreLabel());

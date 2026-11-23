@@ -98,11 +98,17 @@ public class GameView {
             gridCanvas.setWidth(gridCanvas.getWidth() * fullScale);
             gridCanvas.setHeight(gridCanvas.getHeight() * fullScale);
             fullsize = true;
+            gameOverLabel.setStyle("-fx-font-size: 50;");
+            gameWonLabel.setStyle("-fx-font-size: 50;");
+            scoreLabel.setStyle("-fx-font-size: 35;");
         } else if (!fullScreen) {
             fullScale = 1;
             gridCanvas.setWidth(initX);
             gridCanvas.setHeight(initY);
             fullsize = false;
+            gameOverLabel.setStyle("-fx-font-size: 15;");
+            gameWonLabel.setStyle("-fx-font-size: 15;");
+            scoreLabel.setStyle("-fx-font-size: 15;");
         }
 
         gameOverLabel.setFont(new Font("Arial", 25 * fullScale));
