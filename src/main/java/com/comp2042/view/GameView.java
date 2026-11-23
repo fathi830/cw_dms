@@ -11,8 +11,11 @@ import javafx.scene.control.Label;
 import javafx.scene.text.Font;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import javafx.scene.image.Image;
 
 import java.awt.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public class GameView {
 
@@ -31,6 +34,7 @@ public class GameView {
     private double fullScale = 1;
     private boolean fullsize = false;
     private SnakeRenderer snakeRenderer;
+    private final Map<String, Image> coinImageCache = new HashMap<>();
 
     public GameView(Game game) {
         this.game = game;
@@ -55,6 +59,10 @@ public class GameView {
 
     public Label getScoreLabel() {
         return scoreLabel;
+    }
+
+    private javafx.scene.image.Image getCoinImage(Coin coin) {
+        return coinImageCache.computeIfAbsent(coin.getImagePath(), Image::new);
     }
 
     public void makeScene(Scene scene, Snake snake, Coin coin) {
@@ -120,7 +128,7 @@ public class GameView {
         gc.setFill(game.getColor());
         gc.fillRect(0, 0, gridCanvas.getWidth(), gridCanvas.getHeight());
 
-        gc.drawImage(coin.getImage(), (coin.getPos().x * game.getMultiplier()) * fullScale, (coin.getPos().y * game.getMultiplier()) * fullScale, game.getMultiplier() * fullScale - 3 * fullScale, game.getMultiplier() * fullScale - 3 * fullScale);
+        gc.drawImage(getCoinImage(coin), (coin.getPos().x * game.getMultiplier()) * fullScale, (coin.getPos().y * game.getMultiplier()) * fullScale, game.getMultiplier() * fullScale - 3 * fullScale, game.getMultiplier() * fullScale - 3 * fullScale);
 
         snakeRenderer.draw(gc, snake, game.getMultiplier(), fullScale);
 
@@ -134,7 +142,7 @@ public class GameView {
         gc.setFill(game.getColor());
         gc.fillRect(0, 0, gridCanvas.getWidth(), gridCanvas.getHeight());
 
-        gc.drawImage(coin.getImage(), (coin.getPos().x * game.getMultiplier()) * fullScale, (coin.getPos().y * game.getMultiplier()) * fullScale, game.getMultiplier() * fullScale - 3 * fullScale, game.getMultiplier() * fullScale - 3 * fullScale);
+        gc.drawImage(getCoinImage(coin), (coin.getPos().x * game.getMultiplier()) * fullScale, (coin.getPos().y * game.getMultiplier()) * fullScale, game.getMultiplier() * fullScale - 3 * fullScale, game.getMultiplier() * fullScale - 3 * fullScale);
 
         snakeRenderer.draw(gc, snake, game.getMultiplier(), fullScale);
     }
