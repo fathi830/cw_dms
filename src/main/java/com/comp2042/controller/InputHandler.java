@@ -9,14 +9,6 @@ public class InputHandler {
     private boolean keyPressed = false;
     private final GameController gameController;
 
-    public static KeyCode getLastKey() {
-        return lastKey;
-    }
-
-    public static KeyCode getKey() {
-        return key;
-    }
-
     public InputHandler(GameController gameController) {
         this.gameController = gameController;
     }
@@ -63,12 +55,21 @@ public class InputHandler {
         }
     }
 
-    public void unlockInput() {
-        keyPressed = false;
-    }
-
     public void resetInput() {
         key = KeyCode.LEFT;
         keyPressed = false;
     }
+
+    public void unlockInput() {
+        keyPressed = false;
+    }
+
+    public static KeyCode getLastKey() {
+        return lastKey;
+    }
+
+    public static KeyCode getKey() {
+        return key;
+    }
+
 }
