@@ -1,20 +1,21 @@
 package com.comp2042.model.coins;
 
+import com.comp2042.controller.GameController;
+import com.comp2042.model.Game;
 import com.comp2042.model.Obstacle;
 import com.comp2042.model.Snake;
-import javafx.scene.image.Image;
 
 import java.awt.*;
 import java.util.Random;
 
 public class Coin {
     private Point pos;
-    private Image image;
+    protected String imagePath;;
     private int points;
 
     public Coin(int x, int y, Snake snake, Obstacle obstacle, int points, String imagePath) {
         this.points = points;
-        this.image = new Image(imagePath);
+        this.imagePath = imagePath;
 
         do {
             Random rnd = new Random();
@@ -29,12 +30,14 @@ public class Coin {
         this(x, y, snake, obstacle, 5, "resources/views/res/redcoin.png");
     }
 
+    public void applyEffect(Game game, Snake snake, Obstacle obstacle, GameController controller) {
+        // Default coin has no special effect
+    }
+
     public int getPoints() {
         return points;
     }
-    public Image getImage() {
-        return image;
-    }
+    public String getImagePath() { return imagePath; }
     public Point getPos() {
         return new Point(pos);
     }

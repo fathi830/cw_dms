@@ -2,6 +2,9 @@ package com.comp2042.model;
 
 import javafx.scene.paint.Color;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Game {
     private static final double EASY_SPEED = 8.5;
     private static final double HARD_SPEED = 13.0;
@@ -16,6 +19,7 @@ public class Game {
     private double speed;
     private boolean powerUp;
     private boolean noBorder;
+    private final List<GameObserver> observers = new ArrayList<>();
 
     public Game(int x, int y, boolean powerUp, char difficulty) {
         if (difficulty == 'E') {
@@ -43,10 +47,6 @@ public class Game {
         return score == maxScore;
     }
 
-    public void incScore() {
-        score++;
-    }
-
     public void decMaxScore(int num) {
         this.maxScore -= (num - 1);
     }
@@ -59,21 +59,12 @@ public class Game {
         return height;
     }
 
-    public void resetScore() {
-        score = 0;
-        scorePoints = 0;
-    }
-
     public Color getColor() {
         return color;
     }
 
     public double getMultiplier() {
         return multiplier;
-    }
-
-    public void addPoints(int n) {
-        scorePoints += n;
     }
 
     public int getScorePoints() {
@@ -90,5 +81,45 @@ public class Game {
 
     public boolean isNoBorder() {
         return noBorder;
+    }
+
+    public void addObserver(GameObserver observer) {
+        observers.add(observer);
+    }
+
+    public void resetScore() {
+        score = 0;
+        scorePoints = 0;
+        notifyScoreChanged();
+        notifyGameWon();
+        notifyGameOver(false);
+    }
+
+    public void incScore() {
+        score++;
+        notifyGameWon();
+    }
+
+    public void addPoints(int n) {
+        scorePoints += n;
+        notifyScoreChanged();
+    }
+
+    private void notifyScoreChanged() {
+        for (GameObserver o : observers) {
+            o.onScoreChanged(getScorePoints());
+        }
+    }
+
+    private void notifyGameWon() {
+        for (GameObserver o : observers) {
+            o.onGameWon(gameWon());
+        }
+    }
+
+    public void notifyGameOver(boolean isOver) {
+        for (GameObserver o : observers) {
+            o.onGameOver(isOver);
+        }
     }
 }
